@@ -47,29 +47,28 @@ footer {
                 &:hover {
                     animation: iconoHover 0.45s ease forwards;
                 }
-    
                 i {
                     --fa-animation-duration: 3s;
                 }
-            }
-            
-            a:first-child {
-                background-color: v.$colorbackgroudFacebook;
-            }
-            a:nth-child(2) {
-                background-color: v.$colorbackgroudTwitter;
-            }
-            a:nth-child(3) {
-                background-color: v.$colorbackgroudGoogle;
-            }
-            a:nth-child(4) {
-                background-color: v.$colorbackgroudInstagram;
-            }
-            a:nth-child(5) {
-                background-color: v.$colorbackgroudLinkedin;
-            }
-            a:last-child {
-                background-color: v.$colorbackgroudGithub;
+                
+                &:first-child {
+                    background-color: v.$colorbackgroudFacebook;
+                }
+                &:nth-child(2) {
+                    background-color: v.$colorbackgroudTwitter;
+                }
+                &:nth-child(3) {
+                    background-color: v.$colorbackgroudGoogle;
+                }
+                &:nth-child(4) {
+                    background-color: v.$colorbackgroudInstagram;
+                }
+                &:nth-child(5) {
+                    background-color: v.$colorbackgroudLinkedin;
+                }
+                &:last-child {
+                    background-color: v.$colorbackgroudGithub;
+                }
             }
         } 
     }
@@ -108,7 +107,7 @@ footer {
         }
         100% {
             border-radius: 50%;
-            transform: scale(1.6);
+            transform: scale(1.5);
         }
 }
 @keyframes anim_fire {
