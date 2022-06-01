@@ -10,11 +10,11 @@ let randomBackgroundColor = Math.floor(Math.random() * 30);
 // Class "Limite - Boundary" simple (2 vectores)
 class Boundary {
 	constructor (x1, x2, y1, y2) {
-		this.a = createVector(x1, y1);  //  Vector a
-		this.b = createVector(x2, y2);  //  Vector b
+		this.a = createVector(x1, y1);  //  Vector a (begin of line of wall)
+		this.b = createVector(x2, y2);  //  Vector b (end of line of wall)
 	}
 
-	show() {							//  print 2 Vector
+	show() {							//  print 2 Vector - a line  -----------
 		stroke(255);
 		line(this.a.x, this.a.y, this.b.x, this.b.y);
 	}
@@ -23,21 +23,21 @@ class Boundary {
 //  Class "Ray" (rayos) desde 
 class Ray {
 	constructor (pos, angle) {   //  A ray ist a Vector, wit origin: pos(x, y) y a angle (0deg, 360deg)
-		this.pos   = pos;
-		this.angle = angle;
+		this.pos   = pos;		//  in pos(x, y)
+		this.angle = angle;		//  beetwen 0deg and 360deg
 
-		this.dir = p5.Vector.fromAngle(this.angle);  // or angle too.
+		this.dir = p5.Vector.fromAngle(this.angle);  // direction of ray with a vector (or angle too).
 	}
 
 	show() {					//  method print ray, ein line of vector ray
 		stroke(255);
 		push();
-		translate(this.pos.x, this.pos.y);
-		line(0, 0, this.dir.x, this.dir.y);
+		translate(this.pos.x, this.pos.y);	// translate to pos(x,y)
+		line(0, 0, this.dir.x, this.dir.y);	// the direction of ray
 		pop();
 	}
 
-	cast (wall) {				//  method "cast": intersection de ray with wall.
+	cast (wall) {				//  method "cast": intersection de ray (pos and dir) with wall (a and b)
 		const x1 = wall.a.x;	//  (x1, y1, x2, y2) coordenadas of the wall
 		const y1 = wall.a.y;
 		const x2 = wall.b.x;
@@ -71,8 +71,8 @@ class Particle {			// some rays, 360deg, array of objekts rays origen pos (posit
 	constructor () {
 		this.pos = createVector(width / 2, height / 2);
 		this.rays = [];
-		for (let a = 0; a < 360; a ++) {
-			this.rays.push(new Ray (this.pos, radians(a)));
+		for (let ang = 0; ang < 360; ang ++) {
+			this.rays.push(new Ray (this.pos, radians(ang))); // a instance of object "ray" intro array of rays
 		}
 	}
 
@@ -109,7 +109,7 @@ class Particle {			// some rays, 360deg, array of objekts rays origen pos (posit
 	show() {
 		for (let i = 0; i < this.rays.length; i++) {
 			fill((i + frameCount * 3) % 360, 255, 255, (i + frameCount * 3) % 360);
-			ellipse(this.pos.x, this.pos.y, 25);  //  ellipse of point 
+			ellipse(this.pos.x, this.pos.y, 15);  //  ellipse of point 
 			
 		}
 		for (let ray of this.rays) {
@@ -118,7 +118,7 @@ class Particle {			// some rays, 360deg, array of objekts rays origen pos (posit
 	}
 }
 
-function setup() 					//  function setup of p5.js löibrary, initialization objects
+function setup() 					//  function setup of p5.js library, initialization objects
 {
 	createCanvas(1600, 804);
 	for (let i = 0; i < 12; i++) {
@@ -135,9 +135,10 @@ function setup() 					//  function setup of p5.js löibrary, initialization obje
 	particle = new Particle();	// Init particles of rays
 }
 
+
 function draw() {	//  function draw() of library p5.js)
 	randomBackgroundColor = noise(Math.floor(Math.random() * xoff )) * 20;
-	console.log('randomBackgroundColor: ' + randomBackgroundColor); 
+	//  console.log('randomBackgroundColor: ' + randomBackgroundColor); 
 	background(randomBackgroundColor);
 	stroke(255);
 	for (let wall of walls) {
@@ -152,3 +153,21 @@ function draw() {	//  function draw() of library p5.js)
 	xoff += 0.015;
 	yoff += 0.015;
 }
+
+document.addEventListener ( 'click', (e) => {
+	for (let i = 0; i < 12; i++) {
+		let x1 = random(width);
+		let x2 = random(width);
+		let y1 = random(height);
+		let y2 = random(height);
+		walls[i] = new Boundary(x1, y1, x2, y2);  //  array of 12 walls
+	}
+	walls.push(new Boundary(0, 0, width, 0));			//  definition of limit of walls of canvas
+	walls.push(new Boundary(width, 0, width, height));
+	walls.push(new Boundary(width, height, 0, height));
+	walls.push(new Boundary(0, height, 0, 0));
+	particle = new Particle();	// Init particles of rays
+	for (let wall of walls) {
+		wall.show();			//  Show of walls
+	}
+});
